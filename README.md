@@ -111,3 +111,101 @@ $ nest g res guitar
 ```bash
 $ npm i --save class-validator class-transformer
 ```
+
+# Создаю фаил docker-compose.yml
+поднять 
+```bash
+$ docker compose up
+```
+
+# PRISMA
+```bash
+$ npm install prisma --save-dev
+```
+
+ Prisma is a modern DB toolkit to query, migrate and model your database (https://prisma.io)
+
+    Usage
+
+      $ prisma [command]
+
+    Commands
+
+                init   Set up Prisma for your app
+                 dev   Start a local Prisma Postgres server for development
+            generate   Generate artifacts (e.g. Prisma Client)
+                  db   Manage your database schema and lifecycle
+             migrate   Migrate your database
+              studio   Browse your data with Prisma Studio
+            validate   Validate your Prisma schema
+              format   Format your Prisma schema
+             version   Displays Prisma version info
+               debug   Displays Prisma debug info
+                 mcp   Starts an MCP server to use with AI development tools
+
+    Flags
+
+         --preview-feature   Run Preview Prisma commands
+         --help, -h          Show additional information about a command
+
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│  Optimize performance through connection pooling and caching with Prisma Accelerate  │
+│  and capture real-time events from your database with Prisma Pulse.                  │
+│  Learn more at https://pris.ly/cli/pdp                                               │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+
+    Examples
+
+      Set up a new local Prisma Postgres `prisma dev`-ready project
+      $ prisma init
+
+      Start a local Prisma Postgres server for development
+      $ prisma dev
+
+      Generate artifacts (e.g. Prisma Client)
+      $ prisma generate
+
+      Browse your data
+      $ prisma studio
+
+      Create migrations from your Prisma schema, apply them to the database, generate artifacts (e.g. Prisma Client)
+      $ prisma migrate dev
+
+      Pull the schema from an existing database, updating the Prisma schema
+      $ prisma db pull
+
+      Push the Prisma schema state to the database
+      $ prisma db push
+
+      Validate your Prisma schema
+      $ prisma validate
+
+      Format your Prisma schema
+      $ prisma format
+
+      Display Prisma version info
+      $ prisma version
+
+      Display Prisma debug info
+      $ prisma debug
+
+```bash
+$ npx prisma init
+```
+
+```bash
+$ npm install dotenv --save
+```
+
+Next steps:
+1. Run prisma dev to start a local Prisma Postgres server.
+2. Define models in the schema.prisma file.
+3. Run prisma migrate dev to migrate your local Prisma Postgres database.
+4. Tip: Explore how you can extend the ORM with scalable connection pooling, global caching, and a managed serverless Postgres database. Read: https://pris.ly/cli/beyond-orm
+
+
+```bash
+$ npx prisma generate
+$ npx prisma migrate dev --name (init)
+```
+
