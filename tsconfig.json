@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "nodenext",//"module": "NodeNext"
+    "module": "NodeNext",//"module": "NodeNext" .было - "module": "nodenext"
     "moduleResolution": "nodenext",
     "resolvePackageJsonExports": true,
     "esModuleInterop": true,
@@ -10,7 +10,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "ES2023",//"target": "ESNext",
+    "target": "ESNext",//"target": "ESNext",было - "target": "ES2023"
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",

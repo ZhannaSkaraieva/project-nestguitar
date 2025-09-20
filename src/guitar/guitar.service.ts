@@ -120,13 +120,8 @@ export class GuitarService {
   }
 
   delete(id: string) {
-    const guitar = this.findById(Number(id));
-    if (!guitar) {
-      throw new NotFoundException('Guitar not found');
-    } else {
-      this.guitars = this.guitars.filter((guitar) => guitar.id !== Number(id));
-    }
-
+    this.findById(Number(id)); // если не найдена → сразу NotFoundException
+    this.guitars = this.guitars.filter((guitar) => guitar.id !== Number(id));
     return this.guitars;
   }
 }

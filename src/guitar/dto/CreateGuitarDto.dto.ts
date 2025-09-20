@@ -1,15 +1,41 @@
+import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+
 export class CreateGuitarDto {
+  @IsString()
+  @IsNotEmpty()
   title: string;
+
+  @IsString()
   vendorCode: string;
+
+  @IsString()
   reviews: string;
+
+  @IsNumber()
   rating: number;
+
+  @IsString()
   article: string;
+
+  @IsString()
   type: string;
+
+  @IsNumber()
   strings: number;
+
+  @IsString()
   description: string;
+
+  @IsNumber()
   price: number;
+
+  @IsBoolean()
   stocked: boolean;
+
+  @IsString()
   image: string;
+
+  @IsNumber()
   quantity: number;
 }
 
