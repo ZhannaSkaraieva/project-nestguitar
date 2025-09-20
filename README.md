@@ -96,3 +96,13 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+
+
+## Add new entity
+
+```bash
+$ nest generate resource guitar 
+$ nest g res guitar 
+```
+отменяет создание файлов для тестирование при сощдании сущности (--no spec)
