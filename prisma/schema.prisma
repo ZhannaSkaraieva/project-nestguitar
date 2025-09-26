@@ -14,20 +14,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Guitar {
-  id          Int      @id @default(autoincrement())
-  title       String
+model Product {
+  id          String   @id @default(uuid())
+  title       String   @unique
   vendorCode  String   @unique
-  reviews     String
-  rating      Float
-  article     String
+  reviews     String?
+  rating      Float?
+  article     String   @unique
   type        String
-  strings     Int
-  description String
-  price       Float
-  stocked     Boolean  @default(true)
-  image       String
-  quantity    Int      @default(1)
+  properties  Json?    @db.JsonB
+  description String?
+  price       Decimal  @default(0.00) @db.Decimal(10, 2) // до 10 знаков, из них 2 после запятой
+  enabled     Boolean  @default(true)
+  image       String?
+  quantity    Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

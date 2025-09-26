@@ -1,42 +1,55 @@
-import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Min,
+} from 'class-validator';
 
-export class CreateGuitarDto {
-  @IsString()
+export class CreateProductDto {
   @IsNotEmpty()
-  title: string;
+  @IsString()
+  name: string = '';
 
   @IsString()
-  vendorCode: string;
+  vendorCode: string = '';
+
+  @IsOptional()
+  @IsString()
+  reviews?: string;
+
+  @IsOptional()
+  @IsNumber()
+  rating?: number;
 
   @IsString()
-  reviews: string;
+  article: string = '';
+
+  @IsString()
+  type: string = '';
+
+  @IsOptional()
+  @IsNumber()
+  properties?: Record<string, number>;
+
+  @IsOptional()
+  @IsString()
+  description?: string;
 
   @IsNumber()
-  rating: number;
-
-  @IsString()
-  article: string;
-
-  @IsString()
-  type: string;
-
-  @IsNumber()
-  strings: number;
-
-  @IsString()
-  description: string;
-
-  @IsNumber()
-  price: number;
+  @Min(0.0)
+  price: number = 0;
 
   @IsBoolean()
-  stocked: boolean;
+  enabled: boolean = true;
 
+  @IsOptional()
   @IsString()
-  image: string;
+  image?: string;
 
   @IsNumber()
-  quantity: number;
+  quantity: number = 0;
 }
 
 // {
