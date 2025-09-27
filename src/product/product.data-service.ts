@@ -1,13 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { UpdateProductDto } from './dto-product/UpdateProductDto.dto';
-import { CreateProductDto } from './dto-product/CreateProductDto.dto';
-import { ProductDataService } from './product.data-service';
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { newProduct, Product } from './interfaces/product.interface';
 
 @Injectable()
-export class ProductService {
-  constructor(private readonly productDataService: ProductDataService) {}
-  // private Products = [
-  //   {
+export class ProductDataService {
+  constructor(private prisma: PrismaService) {}
+  private Products: Product[] = []; // массив продуктов;
   //     id: 1,
   //     name: 'СURT Z30 Plus Acoustics',
   //     vendorCode: 'SO757575',
@@ -52,34 +50,70 @@ export class ProductService {
   //     enabled: true,
   //     image: '/image/ElectroBass.png',
   //   },
-  // ];
 
-  async findAll() {
-    return this.productDataService.findAll();
+  findAll(): Promise<Product[]> {
+    return this.prisma.product.findMany();
   }
 
-  async findById(id: number) {
-    const product = this.productDataService.findById(id);
-    if (!product) {
-      throw new NotFoundException('PRODUCT NOT FOUND'); // 404  писать текст заглавными буквами
-    }
+  findById(id: number): Promise<Product | null> {
+    const product = this.prisma.product.findUnique(
+      (product: { id: number }) => product.id === id,
+    );
     return product;
   }
-
-  async create(dto: CreateProductDto) {
-    return this.productDataService.create(dto);
+  create(product: Omit<Product, 'id'>): Promise<Product> {
+    return this.prisma.product.create({
+      data: {
+        id: this.Products.length + 1,
+        name: product.name,
+        vendorCode: product.vendorCode,
+        reviews: product.reviews || '',
+        rating: product.rating || 0,
+        article: product.article,
+        type: product.type,
+        properties: product.properties || {},
+        description: product.description || '',
+        price: product.price,
+        enabled: true,
+        image: product.image || '',
+        quantity: 0,
+      },
+    });
   }
-
-  async update(id: string, dto: UpdateProductDto) {
-    return this.productDataService.update(Number(id), dto);
+  update(id: number, product: Partial<Product>): Promise<Product> {
+    return this.prisma.product.update({
+      where: { id },
+      data: product,
+    });
   }
-
-  async patch(id: string, dto: Partial<UpdateProductDto>) {
-    return this.productDataService.patch(Number(id), dto);
+  patch(id: number, product: Partial<Product>): Promise<Product> {
+    return this.prisma.product.update({
+      where: { id },
+      data: {
+        ...(product.name !== undefined && { name: product.name }),
+        ...(product.vendorCode !== undefined && {
+          vendorCode: product.vendorCode,
+        }),
+        ...(product.reviews !== undefined && { reviews: product.reviews }),
+        ...(product.rating !== undefined && { rating: product.rating }),
+        ...(product.article !== undefined && { article: product.article }),
+        ...(product.type !== undefined && { type: product.type }),
+        ...(product.properties !== undefined && {
+          properties: product.properties,
+        }),
+        ...(product.description !== undefined && {
+          description: product.description,
+        }),
+        ...(product.price !== undefined && { price: product.price }),
+        ...(product.enabled !== undefined && { enabled: product.enabled }),
+        ...(product.image !== undefined && { image: product.image }),
+        ...(product.quantity !== undefined && { quantity: product.quantity }),
+      },
+    });
   }
-
-  async delete(id: string) {
-    this.findById(Number(id)); // если не найдена → сразу NotFoundException
-    return this.productDataService.delete(Number(id)); // если найдена → удаляем
+  delete(id: number) {
+    const product = this.prisma.product.delete(
+      (product: { id: number }) => product.id !== Number(id),
+    );
   }
 }

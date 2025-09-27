@@ -105,7 +105,7 @@ Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 $ nest generate resource guitar 
 $ nest g res guitar 
 ```
-отменяет создание файлов для тестирование при сощдании сущности (--no spec)
+отменяет создание файлов для тестирование при сощдании сущности (--no-spec)
 
 # Using the built-in ValidationPipe
 ```bash

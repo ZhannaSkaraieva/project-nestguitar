@@ -1,16 +1,16 @@
 import { Module, ValidationPipe } from '@nestjs/common';
-import { ProductService } from './product.service';
-import { ProductController } from './product.controller';
+import { UserService } from './user.service';
+import { UserController } from './user.controller';
 import { APP_PIPE } from '@nestjs/core';
 
 @Module({
-  controllers: [ProductController],
+  controllers: [UserController],
   providers: [
-    ProductService,
+    UserService,
     {
       provide: APP_PIPE,
       useClass: ValidationPipe,
     },
   ],
 })
-export class GuitarModule {}
+export class UserModule {}

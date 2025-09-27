@@ -19,7 +19,7 @@ model Product {
   title       String   @unique
   vendorCode  String   @unique
   reviews     String?
-  rating      Float?
+  rating      Float?   @default(0)
   article     String   @unique
   type        String
   properties  Json?    @db.JsonB
@@ -28,6 +28,39 @@ model Product {
   enabled     Boolean  @default(true)
   image       String?
   quantity    Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  Reviews Reviews[]
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  username  String?
+  reviews   Reviews[]
+  profile   Profile?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Profile {
+  id     Int     @id @default(autoincrement())
+  bio    String?
+  user   User    @relation(fields: [userId], references: [id])
+  userId Int     @unique
+}
+
+model Reviews {
+  id        Int      @id @default(autoincrement())
+  content   String
+  rating    Int
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, productId])
 }
