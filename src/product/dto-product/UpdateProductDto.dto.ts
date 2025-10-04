@@ -38,7 +38,7 @@ export class UpdateProductDto {
 
   @IsNumber()
   @Min(0.0)
-  price: number = 0;
+  price?: number;
 
   @IsBoolean()
   enabled: boolean = true;
@@ -48,5 +48,11 @@ export class UpdateProductDto {
   image?: string;
 
   @IsNumber()
-  quantity: number = 0;
+  quantity?: number;
+
+  @IsOptional()
+  createdAt?: Date;
+
+  @IsOptional()
+  updatedAt?: Date;
 }

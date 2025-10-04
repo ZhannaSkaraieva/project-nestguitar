@@ -1,11 +1,24 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../../../nodu_modules/@prisma/generated';
+
 import { withAccelerate } from '@prisma/extension-accelerate';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
-  prisma = new PrismaClient().$extends(withAccelerate());
+  private readonly prisma = new PrismaClient().$extends(withAccelerate());
+  constructor() {
+    super();
+  }
+
   async onModuleInit() {
-    await this.$connect();
+    await this.prisma.$connect();
+  }
+
+  async onModuleDestroy() {
+    await this.prisma.$disconnect();
+  }
+
+  get client() {
+    return this.prisma;
   }
 }

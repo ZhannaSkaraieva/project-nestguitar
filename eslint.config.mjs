@@ -32,7 +32,12 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-argument': 'warn',
       '@typescript-eslint/no-unsafe-call': 'error',
       '@typescript-eslint/no-unsafe-assignment': 'error',
-      "@typescript-eslint/no-unsafe-return": "error"
+      "@typescript-eslint/no-unsafe-return": "error",
+      '@typescript-eslint/restrict-template-expressions': 'warn',
+      '@typescript-eslint/unbound-method': 'off',
+      'prettier/prettier': 'error',
+      "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error"
     },
   },
 );

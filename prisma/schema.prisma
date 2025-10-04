@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  output   = "../../nodu_modules/@prisma/generated"
 }
 
 datasource db {
@@ -15,8 +15,8 @@ datasource db {
 }
 
 model Product {
-  id          String   @id @default(uuid())
-  title       String   @unique
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
   vendorCode  String   @unique
   reviews     String?
   rating      Float?   @default(0)
@@ -25,7 +25,7 @@ model Product {
   properties  Json?    @db.JsonB
   description String?
   price       Decimal  @default(0.00) @db.Decimal(10, 2) // до 10 знаков, из них 2 после запятой
-  enabled     Boolean  @default(true)
+  enabled     Boolean  @default(false)
   image       String?
   quantity    Int      @default(0)
   createdAt   DateTime @default(now()) @map("created_at")
@@ -35,20 +35,20 @@ model Product {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
-  username  String?
-  reviews   Reviews[]
-  profile   Profile?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id         Int       @id @default(autoincrement())
+  email      String    @unique
+  password   String    @unique
+  role       Role      @default(USER)
+  firstname  String
+  secondname String
+  reviews    Reviews[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
-model Profile {
-  id     Int     @id @default(autoincrement())
-  bio    String?
-  user   User    @relation(fields: [userId], references: [id])
-  userId Int     @unique
+enum Role {
+  USER
+  ADMIN
 }
 
 model Reviews {
@@ -58,7 +58,7 @@ model Reviews {
   user      User     @relation(fields: [userId], references: [id])
   userId    Int
   product   Product  @relation(fields: [productId], references: [id])
-  productId String
+  productId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

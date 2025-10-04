@@ -1,11 +1,17 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { newProduct, Product } from './interfaces/product.interface';
+import { PrismaService } from './../prisma/prisma.service';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
+import { Product } from '../../../nodu_modules/@prisma/generated';
+import { CreateProductDto } from './dto-product/CreateProductDto.dto';
+//import { PrismaService } from 'src/prisma/prisma.service'
+import { UpdateProductDto } from './dto-product/UpdateProductDto.dto';
 
 @Injectable()
 export class ProductDataService {
   constructor(private prisma: PrismaService) {}
-  private Products: Product[] = []; // массив продуктов;
   //     id: 1,
   //     name: 'СURT Z30 Plus Acoustics',
   //     vendorCode: 'SO757575',
@@ -51,69 +57,69 @@ export class ProductDataService {
   //     image: '/image/ElectroBass.png',
   //   },
 
-  findAll(): Promise<Product[]> {
-    return this.prisma.product.findMany();
+  async findAllProducts(): Promise<Product[]> {
+    try {
+      const products = await this.prisma.product.findMany();
+      if (!products || products.length === 0) {
+        throw new NotFoundException('PRODUCTS_NOT_FOUND');
+      }
+      return products;
+    } catch {
+      throw new InternalServerErrorException('ERROR_RETRIEVING_PRODUCTS');
+    }
   }
 
-  findById(id: number): Promise<Product | null> {
-    const product = this.prisma.product.findUnique(
-      (product: { id: number }) => product.id === id,
-    );
-    return product;
+  async findById(id: number): Promise<Product | null> {
+    try {
+      const product = await this.prisma.product.findUnique({ where: { id } });
+      if (!product) {
+        throw new NotFoundException('PRODUCT_NOT_FOUND');
+      }
+      return product;
+    } catch {
+      throw new InternalServerErrorException('ERROR_RETRIEVING_PRODUCT');
+    }
   }
-  create(product: Omit<Product, 'id'>): Promise<Product> {
-    return this.prisma.product.create({
-      data: {
-        id: this.Products.length + 1,
-        name: product.name,
-        vendorCode: product.vendorCode,
-        reviews: product.reviews || '',
-        rating: product.rating || 0,
-        article: product.article,
-        type: product.type,
-        properties: product.properties || {},
-        description: product.description || '',
-        price: product.price,
-        enabled: true,
-        image: product.image || '',
-        quantity: 0,
-      },
-    });
+
+  async create(dto: CreateProductDto): Promise<Product> {
+    try {
+      return this.prisma.product.create({
+        data: { ...dto },
+      });
+    } catch {
+      throw new InternalServerErrorException('Error creating product');
+    }
   }
-  update(id: number, product: Partial<Product>): Promise<Product> {
-    return this.prisma.product.update({
-      where: { id },
-      data: product,
-    });
+
+  async update(id: number, dto: UpdateProductDto): Promise<Product> {
+    try {
+      return await this.prisma.product.update({
+        where: { id },
+        data: dto,
+      });
+    } catch {
+      throw new InternalServerErrorException('Error updating product');
+    }
   }
-  patch(id: number, product: Partial<Product>): Promise<Product> {
-    return this.prisma.product.update({
-      where: { id },
-      data: {
-        ...(product.name !== undefined && { name: product.name }),
-        ...(product.vendorCode !== undefined && {
-          vendorCode: product.vendorCode,
-        }),
-        ...(product.reviews !== undefined && { reviews: product.reviews }),
-        ...(product.rating !== undefined && { rating: product.rating }),
-        ...(product.article !== undefined && { article: product.article }),
-        ...(product.type !== undefined && { type: product.type }),
-        ...(product.properties !== undefined && {
-          properties: product.properties,
-        }),
-        ...(product.description !== undefined && {
-          description: product.description,
-        }),
-        ...(product.price !== undefined && { price: product.price }),
-        ...(product.enabled !== undefined && { enabled: product.enabled }),
-        ...(product.image !== undefined && { image: product.image }),
-        ...(product.quantity !== undefined && { quantity: product.quantity }),
-      },
-    });
+
+  async patch(id: number, dto: UpdateProductDto): Promise<Product> {
+    try {
+      return await this.prisma.product.update({
+        where: { id },
+        data: dto,
+      });
+    } catch {
+      throw new InternalServerErrorException('Error updating product');
+    }
   }
-  delete(id: number) {
-    const product = this.prisma.product.delete(
-      (product: { id: number }) => product.id !== Number(id),
-    );
+
+  async delete(id: number) {
+    try {
+      return await this.prisma.product.delete({
+        where: { id },
+      });
+    } catch {
+      throw new InternalServerErrorException('Error deleting product');
+    }
   }
 }

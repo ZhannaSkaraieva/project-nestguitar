@@ -5,17 +5,17 @@ import {
   MinLength,
   IsOptional,
 } from 'class-validator';
-export class CreateUserDto {
-  @IsNotEmpty({ message: 'Please Enter Full Name' })
-  @IsString({ message: 'Please Enter Valid Name' })
+export class UpdateUserDto {
+  @IsNotEmpty()
+  @IsString()
   firstname!: string;
 
-  @IsNotEmpty({ message: 'Please Enter Full Name' })
-  @IsString({ message: 'Please Enter Valid Name' })
+  @IsNotEmpty()
+  @IsString()
   secondname!: string;
 
-  @IsNotEmpty({ message: 'Please Enter your Email' })
-  @IsEmail({}, { message: 'Please Enter a Valid Email' })
+  @IsNotEmpty()
+  @IsEmail()
   email!: string;
 
   @IsNotEmpty()

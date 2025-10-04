@@ -1,7 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UpdateProductDto } from './dto-product/UpdateProductDto.dto';
 import { CreateProductDto } from './dto-product/CreateProductDto.dto';
 import { ProductDataService } from './product.data-service';
+import { Product } from '../../../nodu_modules/@prisma/generated';
 
 @Injectable()
 export class ProductService {
@@ -54,32 +55,30 @@ export class ProductService {
   //   },
   // ];
 
-  async findAll() {
-    return this.productDataService.findAll();
+  async findAllProducts(): Promise<Product[]> {
+    return await this.productDataService.findAllProducts();
   }
 
-  async findById(id: number) {
-    const product = this.productDataService.findById(id);
-    if (!product) {
-      throw new NotFoundException('PRODUCT NOT FOUND'); // 404  писать текст заглавными буквами
-    }
-    return product;
+  async findById(id: number): Promise<Product | null> {
+    return await this.productDataService.findById(id);
   }
 
-  async create(dto: CreateProductDto) {
+  async create(dto: CreateProductDto): Promise<Product> {
     return this.productDataService.create(dto);
   }
 
-  async update(id: string, dto: UpdateProductDto) {
-    return this.productDataService.update(Number(id), dto);
+  async update(id: number, dto: UpdateProductDto): Promise<Product> {
+    await this.findById(id);
+    return this.productDataService.update(id, dto);
   }
 
-  async patch(id: string, dto: Partial<UpdateProductDto>) {
-    return this.productDataService.patch(Number(id), dto);
+  async patch(id: number, dto: UpdateProductDto): Promise<Product> {
+    await this.findById(id);
+    return this.productDataService.patch(id, dto);
   }
 
-  async delete(id: string) {
-    this.findById(Number(id)); // если не найдена → сразу NotFoundException
-    return this.productDataService.delete(Number(id)); // если найдена → удаляем
+  async delete(id: number): Promise<Product> {
+    await this.findById(id); // если не найдена → сразу NotFoundException
+    return this.productDataService.delete(id); // если найдена → удаляем
   }
 }
