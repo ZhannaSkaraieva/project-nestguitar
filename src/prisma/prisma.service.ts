@@ -1,5 +1,5 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { PrismaClient } from '../../../nodu_modules/@prisma/generated';
+import { PrismaClient } from '.prisma/client';
 
 import { withAccelerate } from '@prisma/extension-accelerate';
 
