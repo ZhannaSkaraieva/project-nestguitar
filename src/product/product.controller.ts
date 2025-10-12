@@ -38,7 +38,7 @@ export class ProductController {
   //GET /produccts/{id}
   @Get(':id') //динамический роутинг http://localhost:3000/product/1 ( :id - динамический параметр)
   async findById(@Param('id') id: number) {
-    return await this.productService.findById(id);
+    return await this.productService.findById(+id);
   }
 
   //POST /products
@@ -53,7 +53,7 @@ export class ProductController {
   //PUT /products/{id}
   @Put(':id')
   update(@Param('id') id: number, @Body() dto: UpdateProductDto) {
-    return this.productService.update(id, dto);
+    return this.productService.update(+id, dto);
   }
   //Для извлечения значения параметра маршрута используется  декоратор @Param ( )
   //получаем к нему доступ в аргументах обработчика маршрута.
@@ -62,12 +62,12 @@ export class ProductController {
   //PATCH /products/{id}
   @Patch(':id')
   patch(@Param('id') id: number, @Body() dto: UpdateProductDto) {
-    return this.productService.patch(id, dto);
+    return this.productService.patch(+id, dto);
   }
 
   //DELETE /products/{id}
   @Delete(':id')
   delete(@Param('id') id: number) {
-    return this.productService.delete(id);
+    return this.productService.delete(+id);
   }
 }

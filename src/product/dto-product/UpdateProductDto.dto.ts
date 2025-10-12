@@ -36,6 +36,7 @@ export class UpdateProductDto {
   @IsString()
   description?: string;
 
+  @IsOptional()
   @IsNumber()
   @Min(0.0)
   price?: number;
@@ -50,9 +51,9 @@ export class UpdateProductDto {
   @IsNumber()
   quantity?: number;
 
-  @IsOptional()
-  createdAt?: Date;
+  // @IsOptional()
+  // createdAt?: Date;
 
-  @IsOptional()
-  updatedAt?: Date;
+  // @IsOptional()
+  // updatedAt?: Date;
 }

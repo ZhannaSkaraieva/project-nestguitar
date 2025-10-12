@@ -1,13 +1,8 @@
 import { PrismaService } from './../prisma/prisma.service';
-import {
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
-import { Product } from '../../../nodu_modules/@prisma/generated';
-import { CreateProductDto } from './dto-product/CreateProductDto.dto';
-//import { PrismaService } from 'src/prisma/prisma.service'
-import { UpdateProductDto } from './dto-product/UpdateProductDto.dto';
+import { Injectable } from '@nestjs/common';
+import { Product } from '../../node_modules/.prisma/client';
+import type { CreateProduct } from './interfaces/product.interface';
+import type { UpdateProduct } from './interfaces/product.updateinterface';
 
 @Injectable()
 export class ProductDataService {
@@ -58,68 +53,38 @@ export class ProductDataService {
   //   },
 
   async findAllProducts(): Promise<Product[]> {
-    try {
-      const products = await this.prisma.product.findMany();
-      if (!products || products.length === 0) {
-        throw new NotFoundException('PRODUCTS_NOT_FOUND');
-      }
-      return products;
-    } catch {
-      throw new InternalServerErrorException('ERROR_RETRIEVING_PRODUCTS');
-    }
+    return await this.prisma.product.findMany();
   }
 
   async findById(id: number): Promise<Product | null> {
-    try {
-      const product = await this.prisma.product.findUnique({ where: { id } });
-      if (!product) {
-        throw new NotFoundException('PRODUCT_NOT_FOUND');
-      }
-      return product;
-    } catch {
-      throw new InternalServerErrorException('ERROR_RETRIEVING_PRODUCT');
-    }
+    return await this.prisma.product.findUnique({
+      where: { id },
+    });
   }
 
-  async create(dto: CreateProductDto): Promise<Product> {
-    try {
-      return this.prisma.product.create({
-        data: { ...dto },
-      });
-    } catch {
-      throw new InternalServerErrorException('Error creating product');
-    }
+  async create(dto: CreateProduct): Promise<Product> {
+    return await this.prisma.product.create({
+      data: { ...dto },
+    });
   }
 
-  async update(id: number, dto: UpdateProductDto): Promise<Product> {
-    try {
-      return await this.prisma.product.update({
-        where: { id },
-        data: dto,
-      });
-    } catch {
-      throw new InternalServerErrorException('Error updating product');
-    }
+  async update(id: number, dto: UpdateProduct): Promise<Product> {
+    return await this.prisma.product.update({
+      where: { id },
+      data: dto,
+    });
   }
 
-  async patch(id: number, dto: UpdateProductDto): Promise<Product> {
-    try {
-      return await this.prisma.product.update({
-        where: { id },
-        data: dto,
-      });
-    } catch {
-      throw new InternalServerErrorException('Error updating product');
-    }
+  async patch(id: number, dto: UpdateProduct): Promise<Product> {
+    return await this.prisma.product.update({
+      where: { id },
+      data: dto,
+    });
   }
 
   async delete(id: number) {
-    try {
-      return await this.prisma.product.delete({
-        where: { id },
-      });
-    } catch {
-      throw new InternalServerErrorException('Error deleting product');
-    }
+    return await this.prisma.product.delete({
+      where: { id },
+    });
   }
 }

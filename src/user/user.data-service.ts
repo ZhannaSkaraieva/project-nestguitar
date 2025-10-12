@@ -4,7 +4,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 
-import { User } from '../../../nodu_modules/@prisma/generated';
+import { User } from '../../node_modules/.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from './dto-user/CreateUserDto.dto';
 import { UpdateUserDto } from './dto-user/UpdateUserDto.dto';

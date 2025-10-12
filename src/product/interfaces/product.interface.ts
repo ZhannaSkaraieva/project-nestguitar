@@ -1,5 +1,5 @@
-export interface Product {
-  id: string;
+export interface CreateProduct {
+  //id: number;
   name: string;
   vendorCode: string;
   reviews?: string;
@@ -12,8 +12,8 @@ export interface Product {
   enabled: boolean;
   image?: string;
   quantity: number;
-  createAt: Date;
-  updateAt: Date;
+  // createAt: Date;
+  // updateAt: Date;
 }
 
 //Что такое интерфейсы?
