@@ -1,22 +1,46 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { UserDataService } from './user.data-service';
 import { User } from '../../node_modules/.prisma/client';
-import { CreateUserDto } from './dto-user/CreateUserDto.dto';
+import type { User } from './interfaces/user.interface';
 import { UpdateUserDto } from './dto-user/UpdateUserDto.dto';
 @Injectable()
 export class UserService {
   constructor(private readonly userDataService: UserDataService) {}
 
   async findAllUsers(): Promise<User[]> {
-    return await this.userDataService.findAllUsers();
+    try {
+      const users = await this.userDataService.findAllUsers();
+      if (!users || users.length === 0) {
+        throw new NotFoundException('NO_USERS_FOUND');
+      }
+      return users;
+    } catch {
+      throw new InternalServerErrorException('ERROR_RETRIEVING_USERS');
+    }
   }
 
   async findUserById(id: number): Promise<User> {
-    return await this.userDataService.findUserById(id);
+    try {
+      const user = await this.userDataService.findUserById(id);
+      if (!user) {
+        throw new NotFoundException('USER_NOT_FOUND');
+      }
+      return user;
+    } catch {
+      throw new InternalServerErrorException('ERROR_RETRIEVING_USER');
+    }
   }
 
-  async create(dto: CreateUserDto): Promise<User> {
-    return await this.userDataService.create(dto);
+  async create(dto: User): Promise<User> {
+    try {
+      return await this.userDataService.create(dto);
+    } catch {
+      throw new InternalServerErrorException('ERROR_CREATING_USER');
+    }
   }
 
   async update(id: number, dto: UpdateUserDto): Promise<User> {

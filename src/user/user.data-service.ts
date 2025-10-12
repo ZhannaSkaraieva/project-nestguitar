@@ -6,7 +6,7 @@ import {
 
 import { User } from '../../node_modules/.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateUserDto } from './dto-user/CreateUserDto.dto';
+import { User } from './interfaces/user.interface';
 import { UpdateUserDto } from './dto-user/UpdateUserDto.dto';
 
 @Injectable()
@@ -14,45 +14,25 @@ export class UserDataService {
   constructor(private prisma: PrismaService) {}
 
   async findAllUsers(): Promise<User[]> {
-    try {
-      const users = await this.prisma.user.findMany();
-      if (!users || users.length === 0) {
-        throw new NotFoundException('NO_USERS_FOUND');
-      }
-      return users;
-    } catch {
-      throw new InternalServerErrorException('ERROR_RETRIEVING_USERS');
-    }
+    return await this.prisma.user.findMany();
   }
 
   async findUserById(id: number): Promise<User> {
-    try {
-      const user = await this.prisma.user.findUnique({ where: { id } });
-      if (!user) {
-        throw new NotFoundException('USER_NOT_FOUND');
-      }
-      return user;
-    } catch {
-      throw new InternalServerErrorException('ERROR_RETRIEVING_USER');
-    }
+    return await this.prisma.user.findUnique({ where: { id } });
   }
 
-  async create(dto: CreateUserDto): Promise<User> {
-    try {
-      return await this.prisma.user.create({
-        data: {
-          email: dto.email,
-          role: dto.role ?? 'USER',
-          firstname: dto.firstname,
-          secondname: dto.secondname,
-          password: dto.password,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      });
-    } catch {
-      throw new InternalServerErrorException('ERROR_CREATING_USER');
-    }
+  async create(dto: User): Promise<User> {
+    return await this.prisma.user.create({
+      data: {
+        email: dto.email,
+        role: dto.role ?? 'USER',
+        firstname: dto.firstname,
+        secondname: dto.secondname,
+        password: dto.password,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    });
   }
 
   async update(id: number, dto: UpdateUserDto): Promise<User> {
