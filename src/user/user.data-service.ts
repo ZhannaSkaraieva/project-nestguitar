@@ -4,9 +4,9 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 
-import { User } from '../../node_modules/.prisma/client';
+import { User, Role } from '../../node_modules/.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { User } from './interfaces/user.interface';
+import { CreateUser } from './interfaces/user.interface';
 import { UpdateUserDto } from './dto-user/UpdateUserDto.dto';
 
 @Injectable()
@@ -18,14 +18,21 @@ export class UserDataService {
   }
 
   async findUserById(id: number): Promise<User> {
-    return await this.prisma.user.findUnique({ where: { id } });
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+    });
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+
+    return user;
   }
 
-  async create(dto: User): Promise<User> {
+  async create(dto: CreateUser): Promise<User> {
     return await this.prisma.user.create({
       data: {
         email: dto.email,
-        role: dto.role ?? 'USER',
+        role: (dto.role as Role) ?? Role.USER,
         firstname: dto.firstname,
         secondname: dto.secondname,
         password: dto.password,

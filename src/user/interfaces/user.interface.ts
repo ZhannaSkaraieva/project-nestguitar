@@ -1,9 +1,10 @@
-export interface User {
-  id: number;
+export interface CreateUser {
+  // id: number;
   firstname: string;
   secondname: string;
+  role: string;
   email: string;
   password: string;
-  createAt: Date;
-  updateAt: Date;
+  // createAt: Date;
+  // updateAt: Date;
 }
