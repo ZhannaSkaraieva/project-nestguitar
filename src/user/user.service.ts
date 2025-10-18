@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   InternalServerErrorException,
+  ConflictException,
 } from '@nestjs/common';
 import { UserDataService } from './user.data-service';
 import { User } from '../../node_modules/.prisma/client';
@@ -36,6 +37,10 @@ export class UserService {
   }
 
   async create(dto: CreateUser): Promise<User> {
+    const user = await this.userDataService.findUserByEmail(dto.email);
+    if (user) {
+      throw new ConflictException('USER_ALREADY_EXISTS');
+    }
     try {
       return await this.userDataService.create(dto);
     } catch {

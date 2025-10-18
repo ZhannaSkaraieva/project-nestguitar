@@ -4,7 +4,7 @@ export class SingInDto {
   @IsEmail({}, { message: 'Please Enter a Valid Email' })
   email!: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Please Enter your Password' })
   @IsString()
   password!: string;
 }

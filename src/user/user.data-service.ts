@@ -8,6 +8,7 @@ import { User, Role } from '../../node_modules/.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUser } from './interfaces/user.interface';
 import { UpdateUserDto } from './dto-user/UpdateUserDto.dto';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UserDataService {
@@ -28,14 +29,25 @@ export class UserDataService {
     return user;
   }
 
+  async findUserByEmail(email: string): Promise<User> {
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+    });
+    if (!user) {
+      throw new NotFoundException(`User with id ${email} not found`);
+    }
+    return user;
+  }
+
   async create(dto: CreateUser): Promise<User> {
+    const hashedPassword = await bcrypt.hash(dto.password, 10); // хешируем пароль
     return await this.prisma.user.create({
       data: {
         email: dto.email,
         role: (dto.role as Role) ?? Role.USER,
         firstname: dto.firstname,
         secondname: dto.secondname,
-        password: dto.password,
+        password: hashedPassword,
         createdAt: new Date(),
         updatedAt: new Date(),
       },

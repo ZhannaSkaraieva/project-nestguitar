@@ -41,3 +41,11 @@ export class UserController {
     return await this.userService.delete(id);
   }
 }
+
+// {
+//   "email": "user@example.com",
+//   "password": "securePassword123",
+//   "role": "USER",
+//   "firstname": "John",
+//   "secondname": "Doe"
+//}
