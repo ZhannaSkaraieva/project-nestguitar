@@ -18,25 +18,16 @@ export class UserDataService {
     return await this.prisma.user.findMany();
   }
 
-  async findUserById(id: number): Promise<User> {
-    const user = await this.prisma.user.findUnique({
+  async findUserById(id: number): Promise<User | null> {
+    return await this.prisma.user.findUnique({
       where: { id },
     });
-    if (!user) {
-      throw new NotFoundException(`User with id ${id} not found`);
-    }
-
-    return user;
   }
 
-  async findUserByEmail(email: string): Promise<User> {
-    const user = await this.prisma.user.findUnique({
+  async findUserByEmail(email: string): Promise<User | null> {
+    return await this.prisma.user.findUnique({
       where: { email },
     });
-    if (!user) {
-      throw new NotFoundException(`User with id ${email} not found`);
-    }
-    return user;
   }
 
   async create(dto: CreateUser): Promise<User> {

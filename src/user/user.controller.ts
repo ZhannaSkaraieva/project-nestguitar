@@ -48,4 +48,4 @@ export class UserController {
 //   "role": "USER",
 //   "firstname": "John",
 //   "secondname": "Doe"
-//}
+// }

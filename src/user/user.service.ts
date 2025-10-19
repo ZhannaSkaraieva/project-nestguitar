@@ -37,8 +37,8 @@ export class UserService {
   }
 
   async create(dto: CreateUser): Promise<User> {
-    const user = await this.userDataService.findUserByEmail(dto.email);
-    if (user) {
+    const existUse = await this.userDataService.findUserByEmail(dto.email);
+    if (existUse) {
       throw new ConflictException('USER_ALREADY_EXISTS');
     }
     try {
