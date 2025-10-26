@@ -3,8 +3,8 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import type { UpdateProduct } from './interfaces/product.updateinterface';
-import type { CreateProduct } from './interfaces/product.interface';
+import type { IUpdateProduct } from './interfaces/product.updateinterface';
+import type { ICreateProduct } from './interfaces/product.interface';
 import { ProductDataService } from './product.data-service';
 import { Product } from '../../node_modules/.prisma/client';
 
@@ -36,7 +36,7 @@ export class ProductService {
     }
   }
 
-  async create(dto: CreateProduct): Promise<Product> {
+  async create(dto: ICreateProduct): Promise<Product> {
     try {
       return this.productDataService.create(dto);
     } catch {
@@ -44,7 +44,7 @@ export class ProductService {
     }
   }
 
-  async update(id: number, dto: UpdateProduct): Promise<Product> {
+  async update(id: number, dto: IUpdateProduct): Promise<Product> {
     try {
       await this.findById(id);
       return await this.productDataService.update(id, dto);
@@ -53,7 +53,7 @@ export class ProductService {
     }
   }
 
-  async patch(id: number, dto: UpdateProduct): Promise<Product> {
+  async patch(id: number, dto: IUpdateProduct): Promise<Product> {
     try {
       await this.findById(id);
       return await this.productDataService.patch(id, dto);

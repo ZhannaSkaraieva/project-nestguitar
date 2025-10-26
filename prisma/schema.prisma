@@ -31,7 +31,9 @@ model Product {
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
-  Reviews Reviews[]
+  Reviews    Reviews[]
+  //Cart_Item  Cart_Item[]
+  Order_Item Order_Item[]
 }
 
 model User {
@@ -44,6 +46,8 @@ model User {
   reviews    Reviews[]
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
+  Order      Order[]
+  Cart       Cart?
 }
 
 enum Role {
@@ -65,3 +69,41 @@ model Reviews {
   @@unique([userId, productId])
 }
 
+model Order {
+  id         Int          @id @default(autoincrement())
+  user       User         @relation(fields: [userId], references: [id])
+  userId     Int
+  totalPrice Decimal      @default(0.00) @db.Decimal(10, 2)
+  status     String       
+  createdAt  DateTime     @default(now()) @map("created_at")
+  updatedAt  DateTime     @updatedAt @map("updated_at")
+  Order_Item Order_Item[]
+}
+
+model Order_Item {
+  id        Int     @id @default(autoincrement())
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   Int
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+  quantity  Int     @default(1)
+}
+
+model Cart {
+  id        Int         @id @default(autoincrement())
+  user      User        @relation(fields: [userId], references: [id])
+  userId    Int         @unique
+  products  Json?       @db.JsonB //хранится массив id(продукта) и количества
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime    @updatedAt @map("updated_at")
+  Cart_Item Cart_Item[]
+}
+
+model Cart_Item {
+  id        Int     @id @default(autoincrement())
+  cart      Cart    @relation(fields: [cartId], references: [id])
+  cartId    Int
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+  quantity  Int     @default(1)
+}

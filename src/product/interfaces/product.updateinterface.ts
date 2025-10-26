@@ -1,4 +1,4 @@
-export interface UpdateProduct {
+export interface IUpdateProduct {
   //id: number;
   name: string;
   vendorCode: string;

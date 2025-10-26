@@ -1,13 +1,7 @@
-// src/types/express.d.ts
-import 'express';
+import { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
 
 declare module 'express' {
   export interface Request {
-    user?: {
-      sub: number;
-      email: string;
-      // если в payload есть другие поля, добавь их здесь
-      [key: string]: unknown;
-    };
+    user?: JwtPayload;
   }
 }

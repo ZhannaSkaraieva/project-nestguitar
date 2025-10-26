@@ -1,8 +1,8 @@
 import { PrismaService } from './../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { Product } from '../../node_modules/.prisma/client';
-import type { CreateProduct } from './interfaces/product.interface';
-import type { UpdateProduct } from './interfaces/product.updateinterface';
+import type { ICreateProduct } from './interfaces/product.interface';
+import type { IUpdateProduct } from './interfaces/product.updateinterface';
 
 @Injectable()
 export class ProductDataService {
@@ -62,20 +62,43 @@ export class ProductDataService {
     });
   }
 
-  async create(dto: CreateProduct): Promise<Product> {
+  async create(dto: ICreateProduct): Promise<Product> {
+    const {
+      name,
+      vendorCode,
+      article,
+      type,
+      properties,
+      description,
+      price,
+      enabled,
+      image,
+      quantity,
+    } = dto;
     return await this.prisma.product.create({
-      data: { ...dto },
+      data: {
+        name,
+        vendorCode,
+        article,
+        type,
+        properties,
+        description: description ?? null,
+        price,
+        enabled: enabled ?? false,
+        image: image ?? null,
+        quantity: quantity ?? 0,
+      },
     });
   }
 
-  async update(id: number, dto: UpdateProduct): Promise<Product> {
+  async update(id: number, dto: IUpdateProduct): Promise<Product> {
     return await this.prisma.product.update({
       where: { id },
       data: dto,
     });
   }
 
-  async patch(id: number, dto: UpdateProduct): Promise<Product> {
+  async patch(id: number, dto: IUpdateProduct): Promise<Product> {
     return await this.prisma.product.update({
       where: { id },
       data: dto,

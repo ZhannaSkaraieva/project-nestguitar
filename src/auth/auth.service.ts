@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcryptjs';
@@ -20,16 +20,18 @@ export class AuthService {
       where: { email },
     });
     if (!user) {
-      throw new UnauthorizedException('USER_NOT_FOUND');
+      throw new BadRequestException('USER_NOT_FOUND');
     }
+    //сравниваю пароли
+    //const hashPasswordFromLogin = await bcrypt.hash(passwordFromLogin, 10);
     const match = await bcrypt.compare(passwordFromLogin, user.password); //сравнение, проверка
     if (!match) {
-      throw new UnauthorizedException('INVALID_PASSWORD');
+      throw new BadRequestException('INVALID_PASSWORD');
     }
     // если прошла проверка достаю id , email и отправляю с токином
     const payload = {
       sub: user.id,
-      email: user.email,
+      //email: user.email, //убрать email если не нужно в пейлоаде
     };
     return {
       access_token: await this.jwtService.signAsync(payload),

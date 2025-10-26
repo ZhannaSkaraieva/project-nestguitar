@@ -45,7 +45,7 @@ export class CreateProductDto {
   price: number = 0;
 
   @IsBoolean()
-  enabled: boolean = true;
+  enabled: boolean = false;
 
   @IsOptional()
   @IsString()

@@ -49,10 +49,24 @@ export class UserService {
   }
 
   async update(id: number, dto: UpdateUserDto): Promise<User> {
-    return await this.userDataService.update(id, dto);
+    try {
+      const updated = await this.userDataService.update(id, dto);
+      if (!updated) {
+        throw new NotFoundException(`Product with id ${id} not found`);
+      }
+      return updated;
+    } catch {
+      throw new InternalServerErrorException('Error updating user');
+    }
   }
 
   async delete(id: number): Promise<User> {
     return await this.userDataService.delete(id);
+    try {
+      const deletedUser = await this.userDataService.delete(id);
+      return deletedUser;
+    } catch {
+      throw new InternalServerErrorException('Error deleting product');
+    }
   }
 }

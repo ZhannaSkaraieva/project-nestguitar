@@ -1,4 +1,4 @@
-export interface CreateProduct {
+export interface ICreateProduct {
   //id: number;
   name: string;
   vendorCode: string;

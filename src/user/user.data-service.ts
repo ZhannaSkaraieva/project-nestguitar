@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { User, Role } from '../../node_modules/.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -46,28 +42,15 @@ export class UserDataService {
   }
 
   async update(id: number, dto: UpdateUserDto): Promise<User> {
-    try {
-      const updated = await this.prisma.user.update({
-        where: { id },
-        data: dto,
-      });
-      if (!updated) {
-        throw new NotFoundException(`Product with id ${id} not found`);
-      }
-      return updated;
-    } catch {
-      throw new InternalServerErrorException('Error updating user');
-    }
+    return await this.prisma.user.update({
+      where: { id },
+      data: dto,
+    });
   }
 
   async delete(id: number): Promise<User> {
-    try {
-      const deletedUser = await this.prisma.user.delete({
-        where: { id },
-      });
-      return deletedUser;
-    } catch {
-      throw new InternalServerErrorException('Error deleting product');
-    }
+    return await this.prisma.user.delete({
+      where: { id },
+    });
   }
 }
