@@ -61,7 +61,6 @@ export class UserService {
   }
 
   async delete(id: number): Promise<User> {
-    return await this.userDataService.delete(id);
     try {
       const deletedUser = await this.userDataService.delete(id);
       return deletedUser;

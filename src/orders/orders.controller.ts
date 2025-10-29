@@ -1,14 +1,14 @@
 import { Controller, Post, Get, Body, Req } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import type { Request } from 'express';
-import { CheckoutDto } from './dto/CheckoutDto.dto';
+import { CreateOrderDto } from './dto/CreateOrderDto.dto';
 
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Post()
-  createOrder(@Body() checkoutDto: CheckoutDto, @Req() req: Request) {
+  createOrder(@Body() createOrderDto: CreateOrderDto, @Req() req: Request) {
     // Logic to create an order from the user's cart and process payment
   }
 
