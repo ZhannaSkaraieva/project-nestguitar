@@ -15,39 +15,43 @@ datasource db {
 }
 
 model Product {
-  id          Int      @id @default(autoincrement()) //integer, primary key, auto increment
-  name        String   @unique
-  vendorCode  String   @unique
+  id          Int         @id @default(autoincrement()) //integer, primary key, auto increment
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+  name        String      @unique
+  vendorCode  String      @unique
   reviews     String?
-  rating      Float?   @default(0)
-  article     String   @unique
+  rating      Float?      @default(0)
+  article     String      @unique
   type        String
-  properties  Json?    @db.JsonB
+  properties  Json?       @db.JsonB
   description String?
-  price       Decimal  @default(0.00) @db.Decimal(10, 2) // до 10 знаков, из них 2 после запятой
-  enabled     Boolean  @default(false)
+  price       Decimal     @default(0.00) @db.Decimal(10, 2) // до 10 знаков, из них 2 после запятой
+  enabled     Boolean     @default(false)
   image       String?
-  quantity    Int      @default(0)
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-
-  Reviews    Reviews[]
+  quantity    Int         @default(0)
+  Reviews     Reviews[]
   //Cart_Item  Cart_Item[]
-  OrderItem OrderItem[]
+  OrderItem   OrderItem[]
+
+  @@map("product")
 }
 
 model User {
   id         Int       @id @default(autoincrement())
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
   email      String    @unique
   password   String    @unique
   role       Role      @default(USER)
   firstname  String
   secondname String
   reviews    Reviews[]
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
   Order      Order[]
-  Cart       Cart?
+  Payment    Payment[]
+
+  //Cart       Cart?
+  @@map("user")
 }
 
 enum Role {
@@ -57,56 +61,80 @@ enum Role {
 
 model Reviews {
   id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
   content   String
   rating    Int
   user      User     @relation(fields: [userId], references: [id])
   userId    Int
   product   Product  @relation(fields: [productId], references: [id])
   productId Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
   @@unique([userId, productId])
+  @@map("reviews")
 }
 
 model Order {
-  id         Int          @id @default(autoincrement())
-
-  user       User         @relation(fields: [userId], references: [id])
+  id         Int           @id @default(autoincrement())
+  createdAt  DateTime      @default(now()) @map("created_at")
+  updatedAt  DateTime      @updatedAt @map("updated_at")
+  user       User          @relation(fields: [userId], references: [id])
   userId     Int
-
-  totalPrice Decimal      @default(0.00) @db.Decimal(10, 2)
-  status     String       
-  createdAt  DateTime     @default(now()) @map("created_at")
-  updatedAt  DateTime     @updatedAt @map("updated_at")
-  
+  totalPrice Decimal       @default(0.00) @db.Decimal(10, 2)
+  status     PaymentStatus @default(PENDING)
   orderItem  OrderItem[]
+  Payment    Payment[]
+
+  //зарезервированное имя в БД
+  @@map("order") // because "order" is a reserved keyword in SQL
+}
+
+enum PaymentStatus {
+  CANCELLED
+  SUCCESS
+  PENDING
 }
 
 model OrderItem {
-  id        Int     @id @default(autoincrement())
-  order     Order   @relation(fields: [orderId], references: [id])
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  order     Order    @relation(fields: [orderId], references: [id])
   orderId   Int
-  product   Product @relation(fields: [productId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
   productId Int
-  quantity  Int     @default(1)
+  quantity  Int      @default(1)
+
+  @@map("order_item") // because "order_item" is a reserved keyword in SQL
 }
 
-model Cart {
-  id        Int         @id @default(autoincrement())
-  user      User        @relation(fields: [userId], references: [id])
-  userId    Int         @unique
-  products  Json?       @db.JsonB //хранится массив id(продукта) и количества
-  createdAt DateTime    @default(now()) @map("created_at")
-  updatedAt DateTime    @updatedAt @map("updated_at")
-  cartItem CartItem[]
+model Payment {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  order     Order    @relation(fields: [orderId], references: [id])
+  orderId   Int
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  currency  String   @default("usd")
+  amount    Decimal  @db.Decimal(10, 2)
 }
 
-model CartItem {
-  id        Int     @id @default(autoincrement())
-  cart      Cart    @relation(fields: [cartId], references: [id])
-  cartId    Int
-  //product   Product @relation(fields: [productId], references: [id])
-  //productId Int
-  quantity  Int     @default(1)
-}
+// model Cart {
+//   id        Int        @id @default(autoincrement())
+//   user      User       @relation(fields: [userId], references: [id])
+//   userId    Int        @unique
+//   products  Json?      @db.JsonB //хранится массив id(продукта) и количества
+//   createdAt DateTime   @default(now()) @map("created_at")
+//   updatedAt DateTime   @updatedAt @map("updated_at")
+//   cartItem  CartItem[]
+// }
+
+// model CartItem {
+//   id       Int  @id @default(autoincrement())
+//   cart     Cart @relation(fields: [cartId], references: [id])
+//   cartId   Int
+//   //product   Product @relation(fields: [productId], references: [id])
+//   //productId Int
+//   quantity Int  @default(1)
+// }

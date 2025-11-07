@@ -5,7 +5,8 @@ import {
   MinLength,
   IsOptional,
 } from 'class-validator';
-export class CreateUserDto {
+import { CreateUser } from '../interfaces/user.interface';
+export class CreateUserDto implements CreateUser {
   @IsNotEmpty({ message: 'Please Enter Full Name' })
   @IsString({ message: 'Please Enter Valid Name' })
   firstname!: string;

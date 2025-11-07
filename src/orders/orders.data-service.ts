@@ -2,7 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { User, Order } from '@prisma/client';
 import { Product } from '@prisma/client';
-import type { ICreateOrder } from './interfaces/order.interface';
+//import type { ICreateOrder } from './interfaces/createOrder.interface';
+import { IUpdateStatus } from './interfaces/updateStatus.interface';
+import { ICreateOrderInternal } from './interfaces/createOrderInternal.interface';
 
 @Injectable()
 export class OrdersDataService {
@@ -20,14 +22,13 @@ export class OrdersDataService {
     });
   }
 
-  async createOrder(dto: ICreateOrder): Promise<Order> {
+  async create(data: ICreateOrderInternal): Promise<Order> {
     return this.prisma.order.create({
       data: {
-        userId: dto.userId,
-        totalPrice: dto.totalPrice,
-        status: 'PENDING',
+        userId: data.userId,
+        totalPrice: data.totalPrice,
         orderItem: {
-          create: dto.orderItem,
+          create: data.orderItem,
         },
       },
       include: {
@@ -36,6 +37,27 @@ export class OrdersDataService {
     });
   }
 
+  async findAll(): Promise<Order[]> {
+    return this.prisma.order.findMany({
+      include: {
+        orderItem: true,
+      },
+    });
+  }
+
+  async updateStatus(
+    id: number,
+    //status: string,
+    data: IUpdateStatus,
+  ): Promise<Order | null> {
+    return this.prisma.order.update({
+      where: { id },
+      data: { status: data.status },
+      include: {
+        orderItem: true,
+      },
+    });
+  }
   //   async createOrder(userId: number, orderItems: any[]): Promise<any> {
   //     // Logic to create an order from the user's cart and process payment
   //   }

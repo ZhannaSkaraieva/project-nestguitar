@@ -6,10 +6,10 @@ import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
-import { CartModule } from './cart/cart.module';
+//import { CartModule } from './cart/cart.module';
 import { OrdersModule } from './orders/orders.module';
 import { ReviewsModule } from './reviews/reviews.module';
-
+import { StripeModule } from './stripe/stripe.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -17,9 +17,10 @@ import { ReviewsModule } from './reviews/reviews.module';
     ProductModule,
     UserModule,
     AuthModule,
-    CartModule,
+    //CartModule,
     OrdersModule,
     ReviewsModule,
+    StripeModule,
   ], // імпортуємо модуль GuitarModule, добавляется автоматически при создании сущности
   controllers: [AppController],
   providers: [AppService],

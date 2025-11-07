@@ -62,7 +62,7 @@ export class ProductDataService {
     });
   }
 
-  async create(dto: ICreateProduct): Promise<Product> {
+  async create(payload: ICreateProduct): Promise<Product> {
     const {
       name,
       vendorCode,
@@ -74,7 +74,7 @@ export class ProductDataService {
       enabled,
       image,
       quantity,
-    } = dto;
+    } = payload;
     return await this.prisma.product.create({
       data: {
         name,
@@ -91,17 +91,17 @@ export class ProductDataService {
     });
   }
 
-  async update(id: number, dto: IUpdateProduct): Promise<Product> {
+  async update(id: number, payload: IUpdateProduct): Promise<Product> {
     return await this.prisma.product.update({
       where: { id },
-      data: dto,
+      data: payload,
     });
   }
 
-  async patch(id: number, dto: IUpdateProduct): Promise<Product> {
+  async patch(id: number, payload: IUpdateProduct): Promise<Product> {
     return await this.prisma.product.update({
       where: { id },
-      data: dto,
+      data: payload,
     });
   }
 

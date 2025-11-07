@@ -219,3 +219,7 @@ $ npx prisma generate
 $ npx prisma migrate dev --name (init)
 ```
 
+Stripe Node.js Library
+```bash
+$ npm install stripe
+```

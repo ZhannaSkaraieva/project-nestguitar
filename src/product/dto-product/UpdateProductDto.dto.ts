@@ -6,8 +6,9 @@ import {
   IsString,
   Min,
 } from 'class-validator';
+import { IUpdateProduct } from '../interfaces/product.updateinterface';
 
-export class UpdateProductDto {
+export class UpdateProductDto implements IUpdateProduct {
   @IsNotEmpty()
   @IsString()
   name: string = '';

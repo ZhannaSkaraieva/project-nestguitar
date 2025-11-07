@@ -12,6 +12,7 @@ import {
 import { ProductService } from './product.service';
 import { UpdateProductDto } from './dto-product/UpdateProductDto.dto';
 import { CreateProductDto } from './dto-product/CreateProductDto.dto';
+import { Public } from '../auth/public.decorator';
 
 //DTO - Data Transfer Object - обєкт для передачі даних
 //ИСПОЛЬЗУЮ ТОЛЬКО В КОНТРОЛЛЕРЕ
@@ -26,7 +27,7 @@ export class ProductController {
   //контроллеры  @ Get ( ) ,  @ Post ( ) ,  Delete ( ) и  @ Put ( )
   //сообщают Nest о необходимости создания обработчика для конкретной конечной точки HTTP-запросов.
   //GET/products
-  @Get() // http://localhost:3000/product/catalog декоратор
+  @Get() // http://localhost:3000/products декоратор
   async findAllProducts() {
     return await this.productService.findAllProducts();
   }
@@ -42,6 +43,7 @@ export class ProductController {
   }
 
   //POST /products
+  @Public()
   @Post()
   async create(@Body(ValidationPipe) dto: CreateProductDto) {
     return await this.productService.create(dto);

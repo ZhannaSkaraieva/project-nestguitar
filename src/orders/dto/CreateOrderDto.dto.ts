@@ -3,16 +3,15 @@ import {
   IsNotEmpty,
   IsNumber,
   IsArray,
-  IsString,
-  IsOptional,
   ValidateNested,
   ArrayNotEmpty,
 } from 'class-validator';
 import { OrderItemDto } from './OrderItemDto.dto';
+import { ICreateOrder } from '../interfaces/createOrder.interface';
 
-export class CreateOrderDto {
-  [x: string]: any;
-  @IsOptional()
+export class CreateOrderDto implements ICreateOrder {
+  @IsNotEmpty()
+  @IsNumber()
   userId!: number;
 
   @IsArray()
@@ -21,12 +20,12 @@ export class CreateOrderDto {
   @Type(() => OrderItemDto)
   orderItem!: OrderItemDto[];
 
-  @IsNotEmpty()
-  @IsNumber()
-  totalPrice!: number;
+  // @IsNotEmpty()
+  // @IsNumber()
+  // totalPrice!: number;
 
-  @IsNotEmpty()
-  @IsString()
-  status!: string;
+  // @IsNotEmpty()
+  // @IsString()
+  // status!: string;
 }
 export { OrderItemDto };

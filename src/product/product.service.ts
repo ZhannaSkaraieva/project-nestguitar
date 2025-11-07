@@ -36,27 +36,27 @@ export class ProductService {
     }
   }
 
-  async create(dto: ICreateProduct): Promise<Product> {
+  async create(payload: ICreateProduct): Promise<Product> {
     try {
-      return this.productDataService.create(dto);
+      return this.productDataService.create(payload);
     } catch {
       throw new InternalServerErrorException('Error creating product');
     }
   }
 
-  async update(id: number, dto: IUpdateProduct): Promise<Product> {
+  async update(id: number, payload: IUpdateProduct): Promise<Product> {
     try {
       await this.findById(id);
-      return await this.productDataService.update(id, dto);
+      return await this.productDataService.update(id, payload);
     } catch {
       throw new InternalServerErrorException('Error updating product');
     }
   }
 
-  async patch(id: number, dto: IUpdateProduct): Promise<Product> {
+  async patch(id: number, payload: IUpdateProduct): Promise<Product> {
     try {
       await this.findById(id);
-      return await this.productDataService.patch(id, dto);
+      return await this.productDataService.patch(id, payload);
     } catch {
       throw new InternalServerErrorException('Error updating product');
     }

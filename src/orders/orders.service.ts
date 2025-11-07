@@ -1,34 +1,44 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { OrdersDataService } from './orders.data-service';
-import type { ICreateOrder } from './interfaces/order.interface';
 import { Order } from '@prisma/client';
-import type { IOrderItem } from './interfaces/order.interface';
+import type {
+  ICreateOrder,
+  IOrderItem,
+} from './interfaces/createOrder.interface';
+import { IUpdateStatus } from './interfaces/updateStatus.interface';
+//import Stripe from 'stripe';
 
 @Injectable()
 export class OrdersService {
-  constructor(private readonly ordersDataService: OrdersDataService) {}
+  //private stripe: Stripe;
+  constructor(private readonly ordersDataService: OrdersDataService) {
+    // const stripeKey = process.env.STRIPE_SECRET_KEY;
+    // if (!stripeKey) {
+    //   throw new Error('STRIPE_SECRET_KEY is not defined in .env');
+    // }
+    // this.stripe = new Stripe(stripeKey);
+  }
 
-  async createOrder(dto: ICreateOrder): Promise<Order> {
-    const { orderItem, userId } = dto;
+  async create(data: ICreateOrder): Promise<Order> {
+    const { orderItem, userId } = data;
 
     const user = await this.ordersDataService.findUserById(userId);
     if (!user) {
-      throw new Error('User not found');
+      new NotFoundException('User not found'); //check doc about NotFoundException
     }
 
     const arrayOrderItems: IOrderItem[] = [];
     let totalPrice = 0;
-    const status = 'PENDING';
 
     for (const item of orderItem) {
       const product = await this.ordersDataService.findProductById(
         item.productId,
       );
       if (!product) {
-        throw new Error(`Product with ID ${item.productId} not found`);
+        throw new Error(`Product with ID ${item.productId} not found`); //not foundExeption
       }
-      const totalPriceOfOrder = Number(product.price) * item.quantity;
-      totalPrice += totalPriceOfOrder;
+      const totalPriceOfProduct = Number(product.price) * item.quantity;
+      totalPrice += totalPriceOfProduct;
 
       arrayOrderItems.push({
         productId: product.id,
@@ -36,13 +46,33 @@ export class OrdersService {
       });
     }
 
-    const order = await this.ordersDataService.createOrder({
+    const order = await this.ordersDataService.create({
       userId,
+      // status,
       totalPrice,
-      status,
       orderItem: arrayOrderItems,
     });
 
+    return order;
+  }
+
+  async findAll(): Promise<Order[]> {
+    return this.ordersDataService.findAll();
+  }
+
+  async updateStatus(
+    id: number,
+    status: string,
+    payload: IUpdateStatus,
+  ): Promise<Order> {
+    const order = await this.ordersDataService.updateStatus(
+      id,
+      //status,
+      payload,
+    );
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
     return order;
   }
 }
