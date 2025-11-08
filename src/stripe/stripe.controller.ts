@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import StripeService from './stripe.service';
 import { Public } from 'src/auth/public.decorator';
-import { CreatePaymentDto } from './dto/createPaymentDto.dto';
+import { CreatePaymentIntentDto } from './dto/createPaymentIntentDto.dto';
 import { Payment } from '@prisma/client';
 
 @Controller('stripe')
@@ -10,7 +10,9 @@ export class StripeController {
 
   @Public()
   @Post()
-  async create(@Body() dto: CreatePaymentDto): Promise<Payment> {
-    return await this.stripeService.create(dto);
+  async createPaymentIntent(
+    @Body() dto: CreatePaymentIntentDto,
+  ): Promise<Payment> {
+    return await this.stripeService.createPaymentIntent(dto);
   }
 }

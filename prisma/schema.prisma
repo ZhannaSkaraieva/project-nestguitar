@@ -109,15 +109,17 @@ model OrderItem {
 }
 
 model Payment {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  order     Order    @relation(fields: [orderId], references: [id])
-  orderId   Int
-  user      User     @relation(fields: [userId], references: [id])
-  userId    Int
-  currency  String   @default("usd")
-  amount    Decimal  @db.Decimal(10, 2)
+  id                    Int           @id @default(autoincrement())
+  createdAt             DateTime      @default(now()) @map("created_at")
+  updatedAt             DateTime      @updatedAt @map("updated_at")
+  order                 Order         @relation(fields: [orderId], references: [id])
+  orderId               Int
+  user                  User          @relation(fields: [userId], references: [id])
+  userId                Int
+  currency              String        @default("usd")
+  amount                Decimal       @db.Decimal(10, 2)
+  stripePaymentIntentId String        @unique
+  status                PaymentStatus @default(PENDING)
 }
 
 // model Cart {
