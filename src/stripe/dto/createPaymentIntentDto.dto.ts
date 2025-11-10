@@ -1,13 +1,17 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { ICreatePaymentIntent } from '../interfaces/createPaymentIntent.interface';
+import { Type } from 'class-transformer';
 //import { IsEnum } from 'class-validator';
 //import { PaymentStatus } from '@prisma/client';
 
 export class CreatePaymentIntentDto implements ICreatePaymentIntent {
   @IsNotEmpty()
+  @Type(() => Number)
   @IsNumber()
   userId!: number;
+
   @IsNotEmpty()
+  @Type(() => Number)
   @IsNumber()
   orderId!: number;
 
@@ -19,9 +23,9 @@ export class CreatePaymentIntentDto implements ICreatePaymentIntent {
   @IsNumber()
   amount!: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  stripePaymentIntentId!: string;
+  stripePaymentIntentId?: string;
 
   // @IsNotEmpty()
   // @IsEnum(PaymentStatus)

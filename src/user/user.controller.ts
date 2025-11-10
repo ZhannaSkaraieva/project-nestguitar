@@ -11,6 +11,7 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto-user/CreateUserDto.dto';
 import { UpdateUserDto } from './dto-user/UpdateUserDto.dto';
+import { Public } from 'src/auth/public.decorator';
 //import { Public } from 'src/auth/public.decorator';
 
 @Controller('user')
@@ -27,7 +28,7 @@ export class UserController {
     return await this.userService.findUserById(id);
   }
 
-  //@Public()
+  @Public()
   @Post()
   async create(@Body(ValidationPipe) dto: CreateUserDto) {
     return await this.userService.create(dto);

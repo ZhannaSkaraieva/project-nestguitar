@@ -12,7 +12,7 @@ export class StripeDataService {
       data: {
         orderId: data.orderId,
         userId: data.userId,
-        stripePaymentIntentId: data.stripePaymentIntentId,
+        stripePaymentIntentId: data.stripePaymentIntentId || null,
         amount: data.amount,
         currency: data.currency,
         //status: data.status,

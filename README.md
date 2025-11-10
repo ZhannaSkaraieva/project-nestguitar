@@ -223,3 +223,24 @@ Stripe Node.js Library
 ```bash
 $ npm install stripe
 ```
+
+```
+$ brew install stripe/stripe-cli/stripe
+````
+Авторизация в Stripe CLI
+```
+stripe login
+````
+Откроется браузер, где нужно разрешить доступ CLI к твоему аккаунту Stripe.
+После успешной авторизации CLI готов слушать события.
+
+Запускаем слушатель вебхуков
+
+В терминале введи:
+
+stripe listen --forward-to localhost:3000/stripe/webhook
+
+Эта команда создаст туннель от Stripe в интернет к твоему локальному серверу.
+После запуска CLI покажет Signing secret, например:
+
+> Ready! Your webhook signing secret is whsec_ABC123XYZ...

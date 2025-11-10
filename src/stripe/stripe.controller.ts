@@ -12,7 +12,12 @@ export class StripeController {
   @Post()
   async createPaymentIntent(
     @Body() dto: CreatePaymentIntentDto,
-  ): Promise<Payment> {
-    return await this.stripeService.createPaymentIntent(dto);
+  ): Promise<{ clientSecret: string | null; payment: Payment }> {
+    const result = await this.stripeService.createPayment(dto);
+    return result;
   }
+
+  // @Public()
+  // @Post('webhook')
+  // async handleStripeWebhook(event) {}
 }

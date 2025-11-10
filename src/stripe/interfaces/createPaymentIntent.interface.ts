@@ -4,6 +4,6 @@ export interface ICreatePaymentIntent {
   orderId: number;
   currency: string;
   amount: number;
-  stripePaymentIntentId: string;
+  stripePaymentIntentId?: string | null;
   //status: PaymentStatus;
 }

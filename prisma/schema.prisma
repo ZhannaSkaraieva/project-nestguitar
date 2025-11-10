@@ -118,7 +118,7 @@ model Payment {
   userId                Int
   currency              String        @default("usd")
   amount                Decimal       @db.Decimal(10, 2)
-  stripePaymentIntentId String        @unique
+  stripePaymentIntentId String?        @unique
   status                PaymentStatus @default(PENDING)
 }
 
