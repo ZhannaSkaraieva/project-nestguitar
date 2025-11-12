@@ -8,7 +8,7 @@ export class StripeDataService {
   constructor(private readonly prisma: PrismaService) {}
 
   async createPayment(data: ICreatePaymentIntent): Promise<Payment> {
-    return this.prisma.payment.create({
+    return await this.prisma.payment.create({
       data: {
         orderId: data.orderId,
         userId: data.userId,
@@ -17,6 +17,16 @@ export class StripeDataService {
         currency: data.currency,
         //status: data.status,
       },
+    });
+  }
+
+  async updatePaymentStatus(
+    stripePaymentIntentId: string,
+    status: string,
+  ): Promise<Payment> {
+    return await this.prisma.payment.update({
+      where: { stripePaymentIntentId },
+      data: { status },
     });
   }
 }

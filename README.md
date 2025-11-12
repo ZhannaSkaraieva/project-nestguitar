@@ -229,7 +229,7 @@ $ brew install stripe/stripe-cli/stripe
 ````
 Авторизация в Stripe CLI
 ```
-stripe login
+$ stripe login
 ````
 Откроется браузер, где нужно разрешить доступ CLI к твоему аккаунту Stripe.
 После успешной авторизации CLI готов слушать события.

@@ -2,8 +2,8 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
-  //Req,
-  // Res,
+  Req,
+  Headers,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
@@ -11,11 +11,13 @@ import { ICreatePaymentIntent } from './interfaces/createPaymentIntent.interface
 import { Payment } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { StripeDataService } from './stripe.data-service';
+import type { RawBodyRequest } from '@nestjs/common';
+import { request, response } from 'express';
 
 @Injectable()
 export default class StripeService {
   private stripe: Stripe;
-  private endpointSecret: string;
+  private endpointSecret: string | undefined;
 
   constructor(
     private configService: ConfigService,
@@ -26,9 +28,6 @@ export default class StripeService {
     if (!stripeKey) {
       throw new Error('STRIPE_SECRET_KEY is not set in environment variables');
     }
-    this.stripe = new Stripe(stripeKey, {
-      apiVersion: '2025-10-29.clover',
-    });
     const endpointSecret = this.configService.get<string>(
       'STRIPE_WEBHOOK_SECRET',
     );
@@ -37,7 +36,10 @@ export default class StripeService {
         'STRIPE_WEBHOOK_SECRET is not set in environment variables',
       );
     }
-    this.endpointSecret = endpointSecret;
+
+    this.stripe = new Stripe(stripeKey, {
+      apiVersion: '2025-10-29.clover',
+    });
   }
 
   //инициирования платежа. Она сообщает Stripe сумму платежа и его валюту.
@@ -77,41 +79,42 @@ export default class StripeService {
     }
   }
 
-  //  async handleStripeWebhook(@Req() req: Request, @Res() res: Response) {
-  //     let event = req.body;
-  //     if (endpointSecret) {
-  //       // Get the signature sent by Stripe
-  //       const signature = req.headers['stripe-signature'];
-  //       try {
-  //         event = stripe.webhooks.constructEvent(
-  //           req.body,
-  //           signature,
-  //           endpointSecret
-  //         );
-  //       } catch (err) {
-  //         console.log(`⚠️ Webhook signature verification failed.`, err.message);
-  //         return res.sendStatus(400);
-  //       }
-  //       // Handle the event
-  //       switch (event.type) {
-  //         case 'payment_intent.succeeded':
-  //           const paymentIntent = event.data.object;
-  //           // Then define and call a method to handle the successful payment intent.
-  //           // handlePaymentIntentSucceeded(paymentIntent);
-  //           break;
-  //         case 'payment_method.attached':
-  //           const paymentMethod = event.data.object;
-  //           // Then define and call a method to handle the successful attachment of a PaymentMethod.
-  //           // handlePaymentMethodAttached(paymentMethod);
-  //           break;
-  //         // ... handle other event types
-  //         default:
-  //           console.log(`Unhandled event type ${event.type}`);
-  //       }
+  async handleStripeWebhook(
+    //@Headers('stripe-signature') signature: string, // Get the signature sent by Stripe
+    @Req() req: RawBodyRequest<Request>,
+  ) {
+    let stripeEvent: Stripe.Event;
+    const payload = req.rawBody;
+    if (!payload) {
+      throw new Error('Missing raw body for Stripe webhook');
+    }
+    if (this.endpointSecret) {
+      const signature = request.headers['stripe-signature'];
+      if (!signature || Array.isArray(signature)) {
+        throw new Error('Invalid or missing Stripe signature');
+      }
+      try {
+        stripeEvent = this.stripe.webhooks.constructEvent(
+          payload,
+          signature,
+          this.endpointSecret,
+        );
+      } catch {
+        return response
+          .status(400)
+          .send(`⚠️ Webhook signature verification failed.`);
+      }
 
-  //       // Return a response to acknowledge receipt of the event
-  //       response.json({ received: true });
-  //     }
+      if (stripeEvent.type === 'payment_intent.succeeded') {
+        const paymentIntent = stripeEvent.data.object as Stripe.PaymentIntent;
+        await this.stripeDataService.updatePaymentStatus(
+          paymentIntent.id,
+          'SUCCEEDED',
+        );
 
-  //   }
+        // Return a response to acknowledge receipt of the event
+        response.json({ received: true });
+      }
+    }
+  }
 }
