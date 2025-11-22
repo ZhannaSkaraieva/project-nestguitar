@@ -5,13 +5,14 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../node_modules/.prisma/client"
+  provider = "prisma-client"
+  output   = "./generated"
+  //output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  //url      = env("DATABASE_URL")
 }
 
 model Product {
@@ -120,6 +121,8 @@ model Payment {
   amount                Decimal       @db.Decimal(10, 2)
   stripePaymentIntentId String?        @unique
   status                PaymentStatus @default(PENDING)
+
+  @@map("payment")
 }
 
 // model Cart {

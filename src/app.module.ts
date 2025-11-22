@@ -10,6 +10,9 @@ import { AuthModule } from './auth/auth.module';
 import { OrdersModule } from './orders/orders.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { StripeModule } from './stripe/stripe.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -21,6 +24,9 @@ import { StripeModule } from './stripe/stripe.module';
     OrdersModule,
     ReviewsModule,
     StripeModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+    }),
   ], // імпортуємо модуль GuitarModule, добавляется автоматически при создании сущности
   controllers: [AppController],
   providers: [AppService],

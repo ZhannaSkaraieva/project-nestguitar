@@ -120,10 +120,7 @@ $ npm i --save class-validator class-transformer
 В сочетании с class-validatorDTO class-transformerэто делает его мощным инструментом для разработки API.
 
 
-```
-
-# Создаю фаил docker-compose.yml
-поднять 
+# Создаю фаил docker-compose.yml поднять 
 ```bash
 $ docker compose up
 ```
@@ -219,18 +216,21 @@ $ npx prisma generate
 $ npx prisma migrate dev --name (init)
 ```
 
-Stripe Node.js Library
+## Stripe Node.js Library
 ```bash
 $ npm install stripe
 ```
 
-```
+```bash
 $ brew install stripe/stripe-cli/stripe
 ````
+
 Авторизация в Stripe CLI
-```
+
+```bash
 $ stripe login
 ````
+
 Откроется браузер, где нужно разрешить доступ CLI к твоему аккаунту Stripe.
 После успешной авторизации CLI готов слушать события.
 
@@ -244,3 +244,41 @@ stripe listen --forward-to localhost:3000/stripe/webhook
 После запуска CLI покажет Signing secret, например:
 
 > Ready! Your webhook signing secret is whsec_ABC123XYZ...
+
+## ЗАПОЛНЕНИЕ ДАННЫМИ БД: https://docs.nestjs.com/recipes/serve-static?utm_source=chatgpt.com
+1. создаю папку public/products => переношу туда все картинки , которые будут отобраажаться в карточках товаров.
+2. Для обслуживания статического контента в виде одностраничного приложения (SPA) мы можем использовать ServeStaticModule из @nestjs/serve-staticпакета
+
+```bash
+$ npm install --save @nestjs/serve-static 
+```
+
+3. Импортирую ServeStaticModule в корень AppModule и настраиваю, передав объект конфигурации в forRoot()метод.
+@Module({
+  imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+    }),
+  ],
+  controllers: [AppController],
+  providers: [AppService],
+})
+
+дает путь к картинке http://localhost:3000/products/.....jpg
+
+
+## How to seed your database in Prisma ORM  //https://www.prisma.io/docs/orm/prisma-migrate/workflows/seeding
+1. Add folder prisma/seed.ts 
+2. Create some new users and posts in your seed.ts file
+3. Add typescript, ts-node and @types/node development dependencies:
+```bash
+$ npm install -D typescript ts-node @types/node
+```
+4. Add the prisma.seed field to your package.json file:
+"prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
+5. To seed the database, run the db seed CLI command:
+```bash
+$ npx prisma db seed
+```
