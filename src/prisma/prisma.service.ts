@@ -1,7 +1,6 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
-import { PrismaClient } from '.prisma/client';
-
+import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { withAccelerate } from '@prisma/extension-accelerate';
+import { PrismaClient } from './generated/prisma/client';
 
 @Injectable()
 // export class PrismaService extends PrismaClient implements OnModuleInit {
@@ -14,11 +13,7 @@ export class PrismaService
   implements OnModuleInit, OnModuleDestroy
 {
   constructor() {
-    super({
-      // Prisma Accelerate URL берём из env
-      accelerateUrl: process.env.DATABASE_URL,
-    });
-    // Подключаем расширение Accelerate
+    super();
     this.$extends(withAccelerate());
   }
   async onModuleInit() {

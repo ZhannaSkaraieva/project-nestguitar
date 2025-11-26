@@ -97,68 +97,70 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 
-
-
 ## Add new entity
 
 ```bash
-$ nest generate resource guitar 
-$ nest g res guitar 
+$ nest generate resource guitar
+$ nest g res guitar
 ```
-отменяет создание файлов для тестирование при сощдании сущности (--no-spec)
+
+- отменяет создание файлов для тестирование при сощдании сущности (--no-spec)
 
 # Using the built-in ValidationPipe
+
 ```bash
 $ npm i --save class-validator class-transformer
 ```
-Введите класс-трансформер
-Эта class-transformerбиблиотека расширяет возможности DTO, преобразуя простые объекты JavaScript (например, полезные данные запроса) в экземпляры классов и преобразуя данные (например, исключая конфиденциальные поля или переименовывая свойства). Она широко используется в NestJS для:
 
-Сопоставление JSON с DTO : преобразование входящих запросов в проверенные экземпляры классов.
-Сериализация ответов : исключение конфиденциальных данных (например, паролей) или преобразование имен свойств.
-Упростите обработку данных : обеспечьте единообразие форматов данных во всем приложении.
-В сочетании с class-validatorDTO class-transformerэто делает его мощным инструментом для разработки API.
+- Введите класс-трансформер
+  Эта class-transformerбиблиотека расширяет возможности DTO, преобразуя простые объекты JavaScript (например, полезные данные запроса) в экземпляры классов и преобразуя данные (например, исключая конфиденциальные поля или переименовывая свойства). Она широко используется в NestJS для:
 
+- Сопоставление JSON с DTO : преобразование входящих запросов в проверенные экземпляры классов.
+  Сериализация ответов : исключение конфиденциальных данных (например, паролей) или преобразование имен свойств.
+  Упростите обработку данных : обеспечьте единообразие форматов данных во всем приложении.
+  В сочетании с class-validatorDTO class-transformerэто делает его мощным инструментом для разработки API.
 
-# Создаю фаил docker-compose.yml поднять 
+# Создаю фаил docker-compose.yml поднять
+
 ```bash
 $ docker compose up
 ```
 
 # PRISMA
+
 ```bash
 $ npm install prisma --save-dev
 ```
 
- Prisma is a modern DB toolkit to query, migrate and model your database (https://prisma.io)
+- Prisma is a modern DB toolkit to query, migrate and model your database (https://prisma.io)
 
-    Usage
+  Usage
 
-      $ prisma [command]
+  $ prisma [command]
 
-    Commands
+  Commands
 
-                init   Set up Prisma for your app
-                 dev   Start a local Prisma Postgres server for development
-            generate   Generate artifacts (e.g. Prisma Client)
-                  db   Manage your database schema and lifecycle
-             migrate   Migrate your database
-              studio   Browse your data with Prisma Studio
-            validate   Validate your Prisma schema
-              format   Format your Prisma schema
-             version   Displays Prisma version info
-               debug   Displays Prisma debug info
-                 mcp   Starts an MCP server to use with AI development tools
+              init   Set up Prisma for your app
+               dev   Start a local Prisma Postgres server for development
+          generate   Generate artifacts (e.g. Prisma Client)
+                db   Manage your database schema and lifecycle
+           migrate   Migrate your database
+            studio   Browse your data with Prisma Studio
+          validate   Validate your Prisma schema
+            format   Format your Prisma schema
+           version   Displays Prisma version info
+             debug   Displays Prisma debug info
+               mcp   Starts an MCP server to use with AI development tools
 
-    Flags
+  Flags
 
-         --preview-feature   Run Preview Prisma commands
-         --help, -h          Show additional information about a command
+       --preview-feature   Run Preview Prisma commands
+       --help, -h          Show additional information about a command
 
 ┌──────────────────────────────────────────────────────────────────────────────────────┐
-│  Optimize performance through connection pooling and caching with Prisma Accelerate  │
-│  and capture real-time events from your database with Prisma Pulse.                  │
-│  Learn more at https://pris.ly/cli/pdp                                               │
+│ Optimize performance through connection pooling and caching with Prisma Accelerate │
+│ and capture real-time events from your database with Prisma Pulse. │
+│ Learn more at https://pris.ly/cli/pdp │
 └──────────────────────────────────────────────────────────────────────────────────────┘
 
     Examples
@@ -204,12 +206,14 @@ $ npx prisma init
 $ npm install dotenv --save
 ```
 
-Next steps:
+- Next steps:
+
 1. Run prisma dev to start a local Prisma Postgres server.
 2. Define models in the schema.prisma file.
 3. Run prisma migrate dev to migrate your local Prisma Postgres database.
-4. Tip: Explore how you can extend the ORM with scalable connection pooling, global caching, and a managed serverless Postgres database. Read: https://pris.ly/cli/beyond-orm
+4. Tip: Explore how you can extend the ORM with scalable connection pooling, global caching, and a managed serverless Postgres database.
 
+- Read: https://pris.ly/cli/beyond-orm
 
 ```bash
 $ npx prisma generate
@@ -217,68 +221,80 @@ $ npx prisma migrate dev --name (init)
 ```
 
 ## Stripe Node.js Library
+
 ```bash
 $ npm install stripe
 ```
 
 ```bash
 $ brew install stripe/stripe-cli/stripe
-````
+```
 
-Авторизация в Stripe CLI
+# Авторизация в Stripe CLI
 
 ```bash
 $ stripe login
-````
+```
 
 Откроется браузер, где нужно разрешить доступ CLI к твоему аккаунту Stripe.
 После успешной авторизации CLI готов слушать события.
 
-Запускаем слушатель вебхуков
+# Запускаем слушатель вебхуков
 
-В терминале введи:
+- В терминале введи:
 
-stripe listen --forward-to localhost:3000/stripe/webhook
+```bash
+$ stripe listen --forward-to localhost:3000/stripe/webhook
+```
 
 Эта команда создаст туннель от Stripe в интернет к твоему локальному серверу.
 После запуска CLI покажет Signing secret, например:
 
 > Ready! Your webhook signing secret is whsec_ABC123XYZ...
+> /
 
-## ЗАПОЛНЕНИЕ ДАННЫМИ БД: https://docs.nestjs.com/recipes/serve-static?utm_source=chatgpt.com
+## ЗАПОЛНЕНИЕ ДАННЫМИ БД:
+
+https://docs.nestjs.com/recipes/serve-static?utm_source=chatgpt.com
+
 1. создаю папку public/products => переношу туда все картинки , которые будут отобраажаться в карточках товаров.
 2. Для обслуживания статического контента в виде одностраничного приложения (SPA) мы можем использовать ServeStaticModule из @nestjs/serve-staticпакета
 
 ```bash
-$ npm install --save @nestjs/serve-static 
+$ npm install --save @nestjs/serve-static
 ```
 
 3. Импортирую ServeStaticModule в корень AppModule и настраиваю, передав объект конфигурации в forRoot()метод.
-@Module({
-  imports: [
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'public'),
-    }),
-  ],
-  controllers: [AppController],
-  providers: [AppService],
-})
+   @Module({
+   imports: [
+   ServeStaticModule.forRoot({
+   rootPath: join(__dirname, '..', 'public'),
+   }),
+   ],
+   controllers: [AppController],
+   providers: [AppService],
+   })
 
 дает путь к картинке http://localhost:3000/products/.....jpg
 
+## How to seed your database in Prisma ORM //https://www.prisma.io/docs/orm/prisma-migrate/workflows/seeding
 
-## How to seed your database in Prisma ORM  //https://www.prisma.io/docs/orm/prisma-migrate/workflows/seeding
-1. Add folder prisma/seed.ts 
+1. Add folder prisma/seed.ts
 2. Create some new users and posts in your seed.ts file
 3. Add typescript, ts-node and @types/node development dependencies:
+
 ```bash
 $ npm install -D typescript ts-node @types/node
 ```
+
 4. Add the prisma.seed field to your package.json file:
-"prisma": {
-    "seed": "ts-node prisma/seed.ts"
-  },
+   "prisma": {
+   "seed": "ts-node prisma/seed.ts"
+   },
 5. To seed the database, run the db seed CLI command:
+
 ```bash
 $ npx prisma db seed
 ```
+
+

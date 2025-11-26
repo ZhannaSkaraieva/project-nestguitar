@@ -6,7 +6,8 @@ import {
 import type { IUpdateProduct } from './interfaces/product.updateinterface';
 import type { ICreateProduct } from './interfaces/product.interface';
 import { ProductDataService } from './product.data-service';
-import { Product } from '../../node_modules/.prisma/client';
+import type { Product } from './generated/prisma/client';
+
 
 @Injectable()
 export class ProductService {

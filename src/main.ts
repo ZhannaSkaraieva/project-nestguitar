@@ -12,7 +12,7 @@ async function bootstrap() {
     rawBody: true,
     bodyParser: true,
   });
-
+  app.enableCors();
   //app.use('/stripe/webhook', express.raw({ type: 'application/json' }));
 
   app.useGlobalPipes(new ValidationPipe({ transform: true })); // Додаємо глобальні пайпи для валідації

@@ -5,7 +5,7 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { UserDataService } from './user.data-service';
-import { User } from '../../node_modules/.prisma/client';
+import { User } from '../../node_modules/@prisma/client';
 import type { CreateUser } from './interfaces/user.interface';
 import { UpdateUserDto } from './dto-user/UpdateUserDto.dto';
 @Injectable()

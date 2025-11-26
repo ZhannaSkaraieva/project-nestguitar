@@ -27,6 +27,7 @@ export class ProductController {
   //контроллеры  @ Get ( ) ,  @ Post ( ) ,  Delete ( ) и  @ Put ( )
   //сообщают Nest о необходимости создания обработчика для конкретной конечной точки HTTP-запросов.
   //GET/products
+  @Public()
   @Get() // http://localhost:3000/products декоратор
   async findAllProducts() {
     return await this.productService.findAllProducts();
@@ -37,6 +38,7 @@ export class ProductController {
   //В этом случае Nest будет ожидать разрешения Promise перед отправкой ответа клиенту.
 
   //GET /produccts/{id}
+  @Public()
   @Get(':id') //динамический роутинг http://localhost:3000/product/1 ( :id - динамический параметр)
   async findById(@Param('id') id: number) {
     return await this.productService.findById(+id);
@@ -53,6 +55,7 @@ export class ProductController {
   // Если вы хотите изменить код статуса, вы можете использовать декоратор @HttpCode().
 
   //PUT /products/{id}
+  @Public()
   @Put(':id')
   update(@Param('id') id: number, @Body() dto: UpdateProductDto) {
     return this.productService.update(+id, dto);
@@ -62,12 +65,14 @@ export class ProductController {
   //декоратор @ Body ( )обеспечивает простой доступ к телу запроса
 
   //PATCH /products/{id}
+  @Public()
   @Patch(':id')
   patch(@Param('id') id: number, @Body() dto: UpdateProductDto) {
     return this.productService.patch(+id, dto);
   }
 
   //DELETE /products/{id}
+  @Public()
   @Delete(':id')
   delete(@Param('id') id: number) {
     return this.productService.delete(+id);
