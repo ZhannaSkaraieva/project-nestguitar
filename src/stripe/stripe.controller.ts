@@ -2,8 +2,8 @@ import { Body, Controller, Post, Req } from '@nestjs/common';
 import StripeService from './stripe.service';
 import { Public } from 'src/auth/public.decorator';
 import { CreatePaymentIntentDto } from './dto/createPaymentIntentDto.dto';
-import { Payment } from '@prisma/client';
 import type { RawBodyRequest } from '@nestjs/common';
+import { Payment } from 'src/generated/prisma/client';
 
 @Controller('stripe')
 export class StripeController {

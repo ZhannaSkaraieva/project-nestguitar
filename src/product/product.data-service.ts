@@ -2,7 +2,7 @@ import { PrismaService } from './../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import type { ICreateProduct } from './interfaces/product.interface';
 import type { IUpdateProduct } from './interfaces/product.updateinterface';
-import { Product } from '../generated';
+import { Product } from 'src/generated/prisma/client';
 
 
 @Injectable()

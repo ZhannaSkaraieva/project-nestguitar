@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { User, Order } from '@prisma/client';
-import { Product } from '@prisma/client';
 //import type { ICreateOrder } from './interfaces/createOrder.interface';
 import { IUpdateStatus } from './interfaces/updateStatus.interface';
 import { ICreateOrderInternal } from './interfaces/createOrderInternal.interface';
+import type { Order, Product, User } from 'src/generated/prisma/client';
 
 @Injectable()
 export class OrdersDataService {

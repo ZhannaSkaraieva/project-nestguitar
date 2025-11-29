@@ -8,11 +8,11 @@ import {
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
 import { ICreatePaymentIntent } from './interfaces/createPaymentIntent.interface';
-import { Payment } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { StripeDataService } from './stripe.data-service';
 import type { RawBodyRequest } from '@nestjs/common';
 import { request, response } from 'express';
+import { Payment } from 'src/generated/prisma/client';
 
 @Injectable()
 export default class StripeService {

@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { OrdersDataService } from './orders.data-service';
-import { Order } from '@prisma/client';
 import type {
   ICreateOrder,
   IOrderItem,
 } from './interfaces/createOrder.interface';
 import { IUpdateStatus } from './interfaces/updateStatus.interface';
+import { Order } from 'src/generated/prisma/client';
 //import Stripe from 'stripe';
 
 @Injectable()

@@ -5,9 +5,9 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { UserDataService } from './user.data-service';
-import { User } from '../../node_modules/@prisma/client';
 import type { CreateUser } from './interfaces/user.interface';
 import { UpdateUserDto } from './dto-user/UpdateUserDto.dto';
+import { User } from 'src/generated/prisma/client';
 @Injectable()
 export class UserService {
   constructor(private readonly userDataService: UserDataService) {}

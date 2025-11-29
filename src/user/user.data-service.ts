@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
-
-import { User, Role } from '../../node_modules/@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUser } from './interfaces/user.interface';
 import { UpdateUserDto } from './dto-user/UpdateUserDto.dto';
 import * as bcrypt from 'bcryptjs';
+import { User, Role } from '../generated/prisma/client';
 
 @Injectable()
 export class UserDataService {

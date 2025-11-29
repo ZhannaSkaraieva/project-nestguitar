@@ -7,8 +7,12 @@
 generator client {
   provider = "prisma-client"
   //output   = "../src/generated"
-  output   = "./generated"
+  output   = "../src/generated/prisma"
   //output   = "../node_modules/.prisma/client"
+  moduleFormat    = "cjs"
+  //Примечание Настройка moduleFormatнеобходима, поскольку Prisma v7 по умолчанию 
+  //поставляется как модуль ES, который не работает с настройкой CommonJS от NestJS. 
+  //Если установить moduleFormatзначение cjs, Prisma будет генерировать модуль CommonJS вместо ESM.
 }
 
 datasource db {

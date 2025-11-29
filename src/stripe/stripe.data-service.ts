@@ -1,7 +1,8 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ICreatePaymentIntent } from './interfaces/createPaymentIntent.interface';
-import { Payment, PaymentStatus } from '@prisma/client';
+import { Payment, PaymentStatus } from 'src/generated/prisma/client';
+
 
 @Injectable()
 export class StripeDataService {

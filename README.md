@@ -297,4 +297,8 @@ $ npm install -D typescript ts-node @types/node
 $ npx prisma db seed
 ```
 
+```bash
+$ npm install @prisma/adapter-pg
+```
+
 
