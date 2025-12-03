@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ICreatePaymentIntent } from './interfaces/createPaymentIntent.interface';
-import { Payment } from '@prisma/client';
+import { Payment, PaymentStatus } from '@prisma/client';
 
 @Injectable()
 export class StripeDataService {
@@ -24,9 +24,13 @@ export class StripeDataService {
     stripePaymentIntentId: string,
     status: string,
   ): Promise<Payment> {
+    if (!Object.values(PaymentStatus).includes(status as PaymentStatus)) {
+      throw new BadRequestException(`Invalid payment status: ${status}`);
+    }
+
     return await this.prisma.payment.update({
       where: { stripePaymentIntentId },
-      data: { status },
+      data: { status: { set: status as PaymentStatus } },
     });
   }
 }
